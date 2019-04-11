@@ -6,7 +6,7 @@ module.exports = {
 };
 
 async function create(student) {
-	const [id] = db('students').insert(student);
+	const [id] = await db('students').insert(student);
 
 	return db('students')
 		.where({ id })
