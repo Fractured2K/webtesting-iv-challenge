@@ -26,7 +26,14 @@ server.post('/students', async (req, res) => {
 
 server.delete('/students/:id', async (req, res) => {
 	try {
-		const student = await Students.remove(req.params.id);
+		let student = await Students.find(req.params.id);
+
+		if (!student)
+			return res.status(404).json({
+				message: "Sorry, that user doesn't exist"
+			});
+
+		student = await Students.remove(req.params.id);
 		res.status(200).json(student);
 	} catch (error) {
 		res.status(500).json(error);
