@@ -3,10 +3,8 @@ const server = require('../server');
 const db = require('../database/dbConfig');
 
 describe('Server.js tests', () => {
-	describe('clean up test database', async () => {
-		beforeEach(async () => {
-			await db('students').truncate();
-		});
+	beforeEach(async () => {
+		await db('students').truncate();
 	});
 
 	describe('GET /', () => {
