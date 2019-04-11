@@ -1,7 +1,14 @@
 const request = require('supertest');
 const server = require('./server');
+const db = require('../database/dbConfig');
 
 describe('Server.js tests', () => {
+	describe('clean up test database', async () => {
+		beforeEach(async () => {
+			await db('students').truncate();
+		});
+	});
+
 	describe('GET /', () => {
 		it('should respond with 200OK', () => {
 			return request(server)
@@ -24,23 +31,25 @@ describe('Server.js tests', () => {
 			const student = {};
 			const response = await request(server)
 				.post('/student')
-                .send(student);
+				.send(student);
 
 			expect(response.status).toBe(400);
 		});
-    });
+	});
 
-    describe('DELETE /students/:id', () => {
-      it('should delete student and respond with 200', () => {
-          const response = await request(server).delete('/students/1')
-          expect(response.status).toBe(200)
-      });
+	describe('DELETE /students/:id', () => {
+		it('should delete student and respond with 200', async () => {
+			const response = await request(server).delete(
+				'/students/1'
+			);
+			expect(response.status).toBe(200);
+		});
 
-      it('should respond with 404 when student with the provided id does not exist', () => {
-        const response = await request(server).delete('/students/2')
-        expect(response.status).toBe(404)
-      });
-
-    })
-
+		it('should respond with 404 when student with the provided id does not exist', async () => {
+			const response = await request(server).delete(
+				'/students/2'
+			);
+			expect(response.status).toBe(404);
+		});
+	});
 });
