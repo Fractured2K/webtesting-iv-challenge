@@ -1,7 +1,8 @@
 const db = require('../database/dbConfig');
 
 module.exports = {
-	create
+	create,
+	remove
 };
 
 async function create(student) {
@@ -10,4 +11,10 @@ async function create(student) {
 	return db('students')
 		.where({ id })
 		.first();
+}
+
+async function remove(id) {
+	return db('students')
+		.where({ id })
+		.del();
 }
